@@ -1,0 +1,38 @@
+{
+  "name": "taskflow-api",
+  "version": "1.0.0",
+  "description": "TaskFlow API is a RESTful project management backend built with Express.js and PostgreSQL, fully containerized using Docker. It provides core project, task, and user management, activity dashboard, focus mode with pomodoro timer features, designed with scalability, clean architecture, and real-world backend practices in mind.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmesomajane/TaskFlow-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/nmesomajane/TaskFlow-API/issues"
+  },
+  "homepage": "https://github.com/nmesomajane/TaskFlow-API#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
