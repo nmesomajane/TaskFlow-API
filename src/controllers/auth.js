@@ -6,16 +6,15 @@ dotenv.config();
 
 
 export const signUp = async (req, res) => {
+    let session = req.session;
     const { username, email, password } = req.body;
     try {
-        // Hash the password
-
         const hashedPassword = await bcrypt.hash(password, 12);
 
         // Create a new user object (this is just a placeholder, replace with your DB logic)
+        
         const newUser = { username, email, password: hashedPassword };
-        // Save the user to the database (replace with your DB logic)
-        // await UserModel.create(newUser);
+       
 
         res.status(201).json({ message: 'User created successfully', user: newUser });
     } catch (error) {
