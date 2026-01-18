@@ -4,6 +4,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import config from './src/config/index.js';
 import pool from './src/database/connection.js';
+import router from './src/Routers/auth.js';
+import errorHandler from './src/middleware/errorHandler.js';
+import AppError from './src/utils/appError.js';
 
 
 import dotenv from 'dotenv';
@@ -12,9 +15,7 @@ dotenv.config();
 // Create Express app
 const app = express();
 
-// MIDDLEWARE
-
-
+// MIDDLEWARES
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
@@ -35,7 +36,8 @@ app.get('/', (req, res) => {
   });
 });
 
-// API routes (uncomment when you create auth routes)
+// API routes 
+app.use(`/api/${config.api.version}`, router);
 // app.use(`/api/${config.api.version}/auth`, authRoutes);
 
 // database connection test and server start
