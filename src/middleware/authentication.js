@@ -1,6 +1,6 @@
 
 import { verifyToken } from '../utils/jwt.js';
-import userRepository from '../repositories/userRepository.js';
+import UserRepository from '../repository/userRepository.js';
 import AppError from '../utils/appError.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
@@ -23,7 +23,7 @@ export const authenticate = asyncHandler(async (req, res, next) => {
   }
 
   
-  const user = await userRepository.findById(decoded.userId);
+  const user = await UserRepository.findById(decoded.userId);
   
   if (!user) {
     throw new AppError('The user belonging to this token no longer exists', 401);

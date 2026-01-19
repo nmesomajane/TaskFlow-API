@@ -1,6 +1,6 @@
 import express from "express";
 import { signIn, signOut,signUp ,getProfile} from "../controllers/auth.js";
-import { validateLogin, validateRegister } from "../../validator/authvalidator.js";
+import { validateLogin, validateRegister } from "../validator/authvalidator.js";
 import { authenticate } from "../middleware/authentication.js";
 
 

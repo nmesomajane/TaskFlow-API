@@ -8,7 +8,7 @@ import authServices from '../services/authServices.js';
 
 import asyncHandler from '../utils/asyncHandler.js';
 import AppError from '../utils/appError.js';
-import userRepsitory from '../repository/userRepsitory.js';
+import userRepsitory from '../repository/userRepository.js';
 
 dotenv.config();
 

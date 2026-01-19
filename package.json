@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "build": "npm install"
+    "build": "npm install",
+    "migrate": "node src/database/migrate.js"
   },
   "repository": {
     "type": "git",

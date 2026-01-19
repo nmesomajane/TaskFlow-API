@@ -1,9 +1,9 @@
 
 import bcrypt from 'bcryptjs';
-import userRepository from '../repositories/userRepository.js';
+import UserRepository from '../repository/userRepository.js';
 import { generateToken } from '../utils/jwt.js';
 import AppError from '../utils/appError.js';
-import { sign } from 'jsonwebtoken';
+
 
 // Service handles business logic for authentication
 class AuthService { 
@@ -12,7 +12,7 @@ class AuthService {
     const { email, password, firstName, lastName } = userData;
 
     // Check if user already exists
-    const existingUser = await userRepository.findByEmail(email);
+    const existingUser = await UserRepository.findByEmail(email);
     
     if (existingUser) {
       throw new AppError('Email already in use', 400);
@@ -23,7 +23,7 @@ class AuthService {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // Create user in database
-    const user = await userRepository.create({
+    const user = await UserRepository.create({
       email,
       passwordHash,
       firstName,
@@ -45,7 +45,7 @@ class AuthService {
 
   // Login existing user
   async login(email, password) {
-    const user = await userRepository.findByEmail(email);
+    const user = await UserRepository.findByEmail(email);
     
     if (!user) {
       throw new AppError('Invalid email or password', 401);
@@ -72,7 +72,7 @@ class AuthService {
 
   // Get user profile
   async getProfile(userId) {
-    const user = await userRepository.findById(userId);
+    const user = await UserRepository.findById(userId);
     
     if (!user) {
       throw new AppError('User not found', 404);
