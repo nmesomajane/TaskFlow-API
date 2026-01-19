@@ -5,6 +5,7 @@ import cors from 'cors';
 import config from './src/config/index.js';
 import pool from './src/database/connection.js';
 import router from './src/Routers/auth.js';
+import projectRouter from './src/Routers/project.js';
 import errorHandler from './src/middleware/errorHandler.js';
 import AppError from './src/utils/appError.js';
 
@@ -38,6 +39,9 @@ app.get('/', (req, res) => {
 
 
 app.use(`/api/${config.api.version}/auth`, router);
+app.use(`/api/${config.api.version}/projects`, projectRouter);
+
+
 
 app.use(errorHandler);
 
