@@ -61,7 +61,7 @@ pool.query('SELECT NOW()', (err, result) => {
       console.log('\n Available Auth Routes:');
       console.log(`   POST http://localhost:${config.port}/api/${config.api.version}/auth/signup`);
       console.log(`   POST http://localhost:${config.port}/api/${config.api.version}/auth/signin`);
-      console.log(`   GET  http://localhost:${config.port}/api/${config.api.version}/auth/profile`);
+      console.log(`   GET  http://localhost:${config.port}/api/${config.api.version}/profile`);
       console.log(`   POST http://localhost:${config.port}/api/${config.api.version}/auth/signout`);
     });
   }
