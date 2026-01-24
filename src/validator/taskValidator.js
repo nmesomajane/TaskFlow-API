@@ -2,6 +2,17 @@ import Joi from 'joi';
 import AppError from '../utils/appError.js';
 
 const createTaskSchema = Joi.object({
+
+      projectId: Joi.number()
+    .integer()
+    .positive()
+    .required()
+    .messages({
+      'number.base': 'Project ID must be a number',
+      'number.integer': 'Project ID must be a whole number',
+      'number.positive': 'Project ID must be positive',
+      'any.required': 'Project ID is required'
+    }),
     title: Joi.string()
         .min(3)
         .max(255)
@@ -18,12 +29,12 @@ const createTaskSchema = Joi.object({
         .messages({
             'string.max': 'Description cannot exceed 2000 characters'
         }),
-    status: Joi.string()
-        .valid('active', 'completed', 'archived')
-        .default('pending')
-        .messages({ 
-            'any.only': 'Status must be one of: active, completed, archived'
-        }),
+     status: Joi.string()
+    .valid('todo', 'in-progress', 'done')  
+    .default('todo')                     
+    .messages({
+      'any.only': 'Status must be one of: todo, in-progress, done'
+    }),
         priority: Joi.string()
         .valid('low', 'medium', 'high')
         .default('medium')
@@ -40,7 +51,8 @@ const createTaskSchema = Joi.object({
 
 export const validateCreateTask = (req, res, next) => {
     const { error, value } = createTaskSchema.validate(req.body, {
-        abortEarly: false
+        abortEarly: false,
+           stripUnknown: false 
     });
     if (error) {
         const errors = error.details.map(detail => detail.message);

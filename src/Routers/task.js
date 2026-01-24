@@ -1,16 +1,17 @@
 import express from 'express';
-const router = express.Router();
-
 
 import * as taskController from '../controllers/taskController.js';
+
 import { 
   validateCreateTask, 
   validateUpdateTask 
-} from '../validators/taskValidator.js';
+} from '../validator/taskValidator.js';
 
 
-import { authenticate } from '../middleware/authenticate.js';
 
+import { authenticate } from '../middleware/authentication.js';
+
+const router = express.Router();
 
 router.use(authenticate);
 
