@@ -276,12 +276,12 @@ class TaskRepository {
     
     const query = `
       SELECT 
-        status,
+        t.status,
         COUNT(*) as count
       FROM tasks t
       JOIN projects p ON t.project_id = p.id
       WHERE p.user_id = $1
-      GROUP BY status
+      GROUP BY t.status
     `;
     
     const result = await pool.query(query, [userId]);

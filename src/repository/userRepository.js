@@ -20,25 +20,23 @@ class UserRepository {
   }
 
   // Create a new user in the database
-  async create(userData) {
-    const { email, passwordHash, firstName, lastName } = userData;
-    const query = `
-      INSERT INTO users (email, password_hash, first_name, last_name)
-      VALUES ($1, $2, $3, $4)
-      RETURNING id, email, first_name, last_name, created_at
-    `;
-    
-    // Execute query with parameters
-    const result = await pool.query(query, [
-      email,
-      passwordHash,
-      firstName,
-      lastName
-    ]);
-    
-    // Return the created user
-    return result.rows[0];
-  }
+ async create(userData) {
+  const { email, password_hash, first_name, last_name } = userData;  // ← Use snake_case
+  const query = `
+    INSERT INTO users (email, password_hash, first_name, last_name)
+    VALUES ($1, $2, $3, $4)
+    RETURNING id, email, first_name, last_name, created_at
+  `;
+  
+  const result = await pool.query(query, [
+    email,
+    password_hash,  // ← Now this works!
+    first_name,
+    last_name
+  ]);
+  
+  return result.rows[0];
+}
 }
 
 export default new UserRepository();
