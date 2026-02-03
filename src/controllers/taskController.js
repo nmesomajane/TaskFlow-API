@@ -24,6 +24,12 @@ const filters = {};
 if (status) filters.status = status;
 if (priority) filters.priority = priority;
 if (projectId) filters.projectId = parseInt(projectId);
+ // Validate that id is a number
+  const taskId = parseInt(id, 10);
+  
+  if (isNaN(taskId)) {
+    throw new AppError('Invalid task ID. Must be a number', 400);
+  }
 
 const tasks = await taskService.getTasks(userId, filters);
 
@@ -93,4 +99,51 @@ res.status(200).json({
 status: 'success',
 data: { task }
 });
+});
+
+export const markActive = asyncHandler(async (req,res) =>{
+const { id } = req.params;
+const userId = req.user.id;
+const task = await taskService.markTaskActive(parseInt(id), userId);
+res.status(200).json({
+status: 'success',
+data: { task }
+});
+});
+
+export const markArchived = asyncHandler(async (req,res) =>{
+const { id } = req.params;
+const userId = req.user.id;
+const task = await taskService.markTaskArchived(parseInt(id), userId);
+res.status(200).json({
+status: 'success',
+data: { task }
+});
+});
+
+
+export const getActiveTasks = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  
+  const tasks = await taskService.getActiveTasks(userId);
+  
+  res.status(200).json({
+    status: 'success',
+    results: tasks.length,
+    data: { tasks }
+  });
+});
+
+
+
+export const getCompletedTasks = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  
+  const tasks = await taskService.getCompletedTasks(userId);
+  
+  res.status(200).json({
+    status: 'success',
+    results: tasks.length,
+    data: { tasks }
+  });
 });

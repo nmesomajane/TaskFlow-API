@@ -1,43 +1,46 @@
-import express from 'express';
+import express from "express";
 
-import * as taskController from '../controllers/taskController.js';
+import * as taskController from "../controllers/taskController.js";
 
-import { 
-  validateCreateTask, 
-  validateUpdateTask 
-} from '../validator/taskValidator.js';
+import {
+  validateCreateTask,
+  validateUpdateTask,
+} from "../validator/taskValidator.js";
 
+import { authenticate } from "../middleware/authentication.js";
 
-
-import { authenticate } from '../middleware/authentication.js';
-
+import { validateId } from "../middleware/validateId.js";
 const router = express.Router();
 
 router.use(authenticate);
 
-router.get('/', taskController.getTasks);
+router.get("/", taskController.getTasks);
+
+//Get tasks by status
+router.get("/active", taskController.getActiveTasks);
+router.get("/completed", taskController.getCompletedTasks);
+
+// Get task statistics
+router.get("/stats", taskController.getTaskStats);
 
 // Create new task
-router.post('/', validateCreateTask, taskController.createTask);
+router.post("/", validateCreateTask, taskController.createTask);
 
 // GET /api/v1/tasks/stats
-// Get task statistics
-router.get('/stats', taskController.getTaskStats);
-
 
 // GET /api/v1/tasks/:id
 // Get single task
-router.get('/:id', taskController.getTask);
+router.get("/:id", validateId(), taskController.getTask);
 
+router.patch("/:id", validateUpdateTask, taskController.updateTask);
 
-router.patch('/:id', validateUpdateTask, taskController.updateTask);
-
-
-router.delete('/:id', taskController.deleteTask);
+router.delete("/:id",validateId(), taskController.deleteTask);
 
 // GET /api/v1/tasks/project/:projectId
 // Get tasks for a specific project
-router.get('/project/:projectId', taskController.getProjectTasks);
-router.post('/:id/complete', taskController.markComplete);
+router.get("/project/:projectId",validateId(), taskController.getProjectTasks);
+router.post("/:id/complete",validateId(), taskController.markComplete);
+router.post("/:id/active", validateId(), taskController.markActive);
+router.post("/:id/archived", validateId(), taskController.markArchived);
 
 export default router;

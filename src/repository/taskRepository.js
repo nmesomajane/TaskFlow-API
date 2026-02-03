@@ -179,6 +179,74 @@ class TaskRepository {
     return result.rows;
   }
 
+
+// GET ACTIVE TASKS (todo + in-progress)
+
+
+async findActiveTasks(userId) {
+  const query = `
+    SELECT 
+      t.id, 
+      t.project_id, 
+      t.user_id, 
+      t.title, 
+      t.description,
+      t.priority, 
+      t.status, 
+      t.due_date, 
+      t.completed_at,
+      t.created_at, 
+      t.updated_at,
+      p.name as project_name
+    FROM tasks t
+    LEFT JOIN projects p ON t.project_id = p.id
+    JOIN projects proj ON t.project_id = proj.id
+    WHERE proj.user_id = $1
+      AND t.status IN ('todo', 'in-progress')
+    ORDER BY 
+      CASE WHEN t.due_date IS NOT NULL THEN 0 ELSE 1 END,
+      t.due_date ASC,
+      CASE t.priority
+        WHEN 'high' THEN 1
+        WHEN 'medium' THEN 2
+        WHEN 'low' THEN 3
+      END,
+      t.created_at DESC
+  `;
+  
+  const result = await pool.query(query, [userId]);
+  return result.rows;
+}
+
+
+
+async findCompletedTasks(userId) {
+  const query = `
+    SELECT 
+      t.id, 
+      t.project_id, 
+      t.user_id, 
+      t.title, 
+      t.description,
+      t.priority, 
+      t.status, 
+      t.due_date, 
+      t.completed_at,
+      t.created_at, 
+      t.updated_at,
+      p.name as project_name
+    FROM tasks t
+    LEFT JOIN projects p ON t.project_id = p.id
+    JOIN projects proj ON t.project_id = proj.id
+    WHERE proj.user_id = $1
+      AND t.status = 'done'
+    ORDER BY t.completed_at DESC NULLS LAST, t.created_at DESC
+  `;
+  
+  const result = await pool.query(query, [userId]);
+  return result.rows;
+}
+
   
   async update(id, updates) {
  
