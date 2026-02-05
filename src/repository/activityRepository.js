@@ -1,4 +1,4 @@
-// src/repository/activityRepository.js
+
 
 class ActivityRepository {
   

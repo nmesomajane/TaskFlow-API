@@ -2,6 +2,9 @@ import taskRepository from "../repository/taskRepository.js";
 import projectRepository from "../repository/projectRepository.js";
 
 import AppError from "../utils/appError.js";
+import activityService from './activityService.js';
+
+
 
 
 class TaskService {
@@ -25,6 +28,15 @@ class TaskService {
       ...taskData,
       userId, // Add user ID
     });
+    await activityService.logActivity(
+      userId,
+      "task_created",
+      "task",
+      task.id,
+      { taskTitle: task.title }
+    );
+
+   
 
     return {
       id: task.id,
@@ -40,6 +52,10 @@ class TaskService {
       updatedAt: task.updated_at,
       projectName: task.project_name,
     };
+
+    // Log the task creation activity
+    
+
   }
 
   async getTasks(userId, filters) {
@@ -95,6 +111,7 @@ class TaskService {
 
   async updateTask(taskId, updates, userId) {
     const task = await taskRepository.findById(taskId);
+    const oldStatus = task.status;
 
     if (!task) {
       throw new AppError("Task not found", 404);
@@ -105,6 +122,19 @@ class TaskService {
     if (!canAccess) {
       throw new AppError("You do not have permission to update this task", 403);
     }
+      // Log activity
+  await activityService.logActivity(
+    userId,
+    'task_status_changed',
+    'task',
+    taskId,
+    { 
+      taskTitle: task.title,
+      oldStatus,
+      newStatus: updates.status
+    }
+  );
+  
 
     const updatedTask = await taskRepository.update(taskId, updates);
 
@@ -240,6 +270,8 @@ class TaskService {
       projectName: task.project_name,
     }));
   }
+
+   
 }
 
 export default new TaskService();

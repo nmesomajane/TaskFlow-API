@@ -1,4 +1,4 @@
-// src/controllers/activityController.js
+
 
 import activityService from '../services/activityService.js';
 import asyncHandler from '../middleware/asyncHandler.js';
