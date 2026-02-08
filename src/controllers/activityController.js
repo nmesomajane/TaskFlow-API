@@ -1,7 +1,7 @@
 
 
 import activityService from '../services/activityService.js';
-import asyncHandler from '../middleware/asyncHandler.js';
+import asyncHandler from '../utils/asyncHandler.js';
 
 // Get user's recent activities
 export const getMyActivities = asyncHandler(async (req, res) => {

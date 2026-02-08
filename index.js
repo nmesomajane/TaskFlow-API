@@ -9,7 +9,7 @@ import projectRouter from './src/Routers/project.js';
 import errorHandler from './src/middleware/errorHandler.js';
 import AppError from './src/utils/appError.js';
 import taskRouter from './src/Routers/task.js';
-import activityRoutes from './activityRoutes.js';
+import activityRoutes from './src/Routers/activity.js';
 
 
 import dotenv from 'dotenv';
