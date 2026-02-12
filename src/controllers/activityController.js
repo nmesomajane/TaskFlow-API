@@ -1,6 +1,6 @@
 
 
-import activityService from '../services/activityService.js';
+import activityService from '../services/activityServices.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
 // Get user's recent activities

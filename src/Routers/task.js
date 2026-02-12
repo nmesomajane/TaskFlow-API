@@ -14,6 +14,9 @@ const router = express.Router();
 
 router.use(authenticate);
 
+
+router.post("/", validateCreateTask, taskController.createTask);
+
 router.get("/", taskController.getTasks);
 
 //Get tasks by status
@@ -24,7 +27,7 @@ router.get("/completed", taskController.getCompletedTasks);
 router.get("/stats", taskController.getTaskStats);
 
 // Create new task
-router.post("/", validateCreateTask, taskController.createTask);
+
 
 // GET /api/v1/tasks/stats
 
@@ -38,7 +41,7 @@ router.delete("/:id",validateId(), taskController.deleteTask);
 
 // GET /api/v1/tasks/project/:projectId
 // Get tasks for a specific project
-router.get("/project/:projectId",validateId(), taskController.getProjectTasks);
+router.get("/project/:projectId", taskController.getProjectTasks);
 router.post("/:id/complete",validateId(), taskController.markComplete);
 router.post("/:id/active", validateId(), taskController.markActive);
 router.post("/:id/archived", validateId(), taskController.markArchived);

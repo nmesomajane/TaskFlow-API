@@ -1,5 +1,4 @@
-
-
+import pool from '../database/connection.js';
 class ActivityRepository {
   
   // Create a new activity log
