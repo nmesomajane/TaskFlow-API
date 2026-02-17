@@ -6,6 +6,8 @@ import {
   validateCreateTask,
   validateUpdateTask,
 } from "../validator/taskValidator.js";
+import cacheMiddleware from "../middleware/cache.js";
+
 
 import { authenticate } from "../middleware/authentication.js";
 
@@ -33,7 +35,11 @@ router.get("/stats", taskController.getTaskStats);
 
 // GET /api/v1/tasks/:id
 // Get single task
-router.get("/:id", validateId(), taskController.getTask);
+// GET with caching
+router.get('/:id', validateId(),
+  cacheMiddleware(3600), // Cache for 1 hour
+  taskController.getTask
+);
 
 router.patch("/:id", validateUpdateTask, taskController.updateTask);
 

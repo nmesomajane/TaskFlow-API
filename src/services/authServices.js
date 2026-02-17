@@ -46,7 +46,7 @@ class AuthService {
   }
 
   // Login existing user
-  async login(email, password) {
+  async login(email, password) {1
     const user = await UserRepository.findByEmail(email);
 
     if (!user) {

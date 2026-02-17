@@ -10,6 +10,7 @@ import errorHandler from './src/middleware/errorHandler.js';
 import AppError from './src/utils/appError.js';
 import taskRouter from './src/Routers/task.js';
 import activityRoutes from './src/Routers/activity.js';
+import cacheService from './src/utils/cache.js';
 
 
 import dotenv from 'dotenv';
@@ -50,23 +51,38 @@ app.use(`/api/${config.api.version}/activities`, activityRoutes);
 app.use(errorHandler);
 
 // Database connection test and server start
-pool.query('SELECT NOW()', (err, result) => {
+pool.query('SELECT NOW()', async (err, result) => {
+
   if (err) {
+
     console.error('❌ Database connection failed:', err.message);
     process.exit(1);
+
   } else {
+
     console.log('✅ Database connected successfully');
-    
+
+    // ✅ CONNECT REDIS HERE
+    try {
+
+      await cacheService.connect();
+      console.log('🚀 Cache service ready');
+
+    } catch (error) {
+
+      console.error('❌ Redis connection failed:', error);
+
+    }
+
     // Start server
     app.listen(config.port, () => {
+
       console.log(` Server running on port ${config.port}`);
       console.log(` Environment: ${config.env}`);
       console.log(` API: http://localhost:${config.port}/api/${config.api.version}`);
-      console.log('\n Available Auth Routes:');
-      console.log(`   POST http://localhost:${config.port}/api/${config.api.version}/auth/signup`);
-      console.log(`   POST http://localhost:${config.port}/api/${config.api.version}/auth/signin`);
-      console.log(`   GET  http://localhost:${config.port}/api/${config.api.version}/profile`);
-      console.log(`   POST http://localhost:${config.port}/api/${config.api.version}/auth/signout`);
+
     });
+
   }
+
 });

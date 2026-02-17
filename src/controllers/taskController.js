@@ -1,10 +1,19 @@
 import asyncHandler from '../utils/asyncHandler.js';
 import taskService from '../services/taskService.js';
+import cacheService from '../utils/cache.js';
+
 
 export const createTask = asyncHandler(async (req, res) => {
 const taskData = req.body;
 
 const userId = req.user.id;
+// Invalidate cache
+    const cacheKey = cache.generateKey(
+      'api',
+      `/tasks/${req.body.userId}`
+    );
+
+    await cacheService.delete(cacheKey);
 
 const task = await taskService.createTask(taskData, userId);
 
@@ -56,6 +65,8 @@ const { id } = req.params;
 const updates = req.body;
 const userId = req.user.id;
 const task = await taskService.updateTask(parseInt(id), updates, userId);
+ // Invalidate related caches
+  await cache.deletePattern(`api:/tasks/${task.userId}*`);
 res.status(200).json({
 status: 'success',
 data: { task }
